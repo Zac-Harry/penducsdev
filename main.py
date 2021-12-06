@@ -5,7 +5,7 @@ import ILib
 # Fonction vérifiant si le caractère est présent.
 # retourne le nouveau mot "clean"
 # Entré: word : mot / wordNoModify : mot sans transformation / clear : mot avec les _ pour les lettres manquantes / char: charactère ajouté
-# Sortie: clean en remplacant les _ par la charactère si il est présen
+# Sortie: clean en remplacant les _ par la charactère si il est présent
 def unClear(word,wordNoModify,clear,char):
     global errors
     global log
