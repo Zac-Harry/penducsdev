@@ -7,8 +7,12 @@ import platform
 allow_letters = "azertyuiopqsdfghjklmwxcvbn"
 allow_symb = "-"
 
-def analyseDico():
-    dico = getDicoFr(stripAccents = True)
+# Fonction permettant d'analyser une liste
+# de mots retournant les propotions de
+# présence des lettres
+# pth = chemin du dictionnaire
+def analyseDico(pth="liste_francais.txt"):
+    dico = getDicoFr(pth=path,stripAccents = True)
     analyse = {}
     for char in allow_letters:
         analyse[char] = 0
@@ -24,34 +28,36 @@ def analyseDico():
         print(str(k)+": " + str(v) + " -> "+str(round(v*100/l,2))+"%")
     return sortedAnalyse
 
-def cheackEasy():
+# Fonction de test permettant de compter le
+# nombre de mots finissables "bêtement" en
+# utiliser les lettres les plus probables
+def cheackEasy(path="liste_francais.txt"):
     count = 0
     analyse = analyseDico()
     errors = 0
-    dico = getDicoFr(path="liste_francais.txt",stripAccents=True)
+    dico = getDicoFr(pth=path,stripAccents=True)
     global maxErrors
     for word in dico:
         err = 0
         wordTemp = word.replace("-","")
-        # print(wordTemp)
         for k,v in analyse.items():
-            # print(k+":"+wordTemp+ str(err))
             if err >= maxErrors or wordTemp=="":
                 break
             if k in wordTemp:
                 wordTemp = wordTemp.replace(k,"")
             else:
                 err+=1
-        # print(word+" " + str(err)+"/"+str(maxErrors))
         if err < maxErrors:
             count += 1
-        # print("\n")
     return count
 
+# Fonction permettant de supprimer les accents
 def strip_accents(s):
    return ''.join(c for c in unicodedata.normalize('NFD', s)
                   if unicodedata.category(c) != 'Mn')
 
+# Fonction permettant de lire un fichier texte
+# et de retourner un liste de mots formatés
 def getDicoFr(path="liste_francais.txt",stripAccents = False):
     l = []
     f = open(path, "r")
@@ -69,13 +75,15 @@ def getDicoFr(path="liste_francais.txt",stripAccents = False):
     f.close()
     return l
 
+# Fonction permettant de générer un mot aléatoire
 def getRandomWord():
     dic = getDicoFr()
     wordNoModify = dic[random.randint(0,len(dic)-1)]
     word = strip_accents(wordNoModify)
     return [wordNoModify,word]
 
-def getClearWord(word,first_letter=False):
+# Fonction générant le mot à afficher avec les _
+def getClearWord(word):
     nWord = ""
     for c in word:
         if c in allow_letters:
@@ -84,6 +92,22 @@ def getClearWord(word,first_letter=False):
             nWord+="-"
     return nWord
 
+# Fonction d'entrée clavier demandant si il
+# faut rejouer ou non
+def playAgainInput():
+    while True:
+        inp = input("Pour rejouer tappez 1, sinon 0:\n")
+        if inp != '1' and inp != '0':
+            print("Non reconnu")
+            continue
+        if inp == "1":
+            return False
+        if inp == "0":
+            return True
+    return False
+
+# Fonction d'entrée clavier permettant de
+# saisir une lettre
 def requestInput(log=[]):
     valid = False
     while not valid:
@@ -99,30 +123,18 @@ def requestInput(log=[]):
             continue
         return inp
 
-def unClear(word,wordNoModify,clear,char):
-    global errors
-    global log
-    temp = list(clear)
-    found = False
-    for i in range(len(word)):
-        if word[i] == char:
-            temp[i] = wordNoModify[i]
-            found = True
-    if not found:
-        print("Erreur !")
-        errors +=1
-    return ''.join(temp)
-
+# Met la première lettre du mot en majuscule
 def firstLetterCapital(word):
     return word[0].upper() + word[1:]
 
-
+# Fonction permettant de trier un fichier texte
+# par taille puis ordre aplhabétique
 def tri():
 
     l=getDicoFr(path="liste_francais.txt")
     dic={}
     maxsize=0
-    
+
     for w in l:
         size = len(w)
         t =  []
@@ -143,63 +155,3 @@ def tri():
     with open("liste_francais_trie.txt", "w") as file:
         for i in range(0,len(l2)):
             file.write(l2[i]+"\n")
-print(tri())
-exit(0)
-
-
-errorsPrint = [
-"\n\n\n\n\n",
-"\n\n\n\n\n____",
-"\n|\n|\n|\n|\n|____",
-"____\n|\n|\n|\n|\n|____",
-"____\n|  |\n|\n|\n|\n|____",
-"____\n|  |\n|  o\n|\n|\n|____",
-"____\n|  |\n|  o\n|  |\n|\n|____",
-"____\n|  |\n|  o\n| /|\n|\n|____",
-"____\n|  |\n|  o\n| /|\\\n|\n|____",
-"____\n|  |\n|  o\n| /|\\\n| /'\n|____",
-"____\n|  |\n|  o\n| /|\\\n| /'\\\n|____"]
-
-bestScore = -1
-maxErrors = len(errorsPrint)-1
-# print(len(getDicoFr()))
-# print(cheackEasy())
-# exit(0)
-
-random = getRandomWord()
-wordNoModify = random[0]
-word = random[1]
-clear = getClearWord(word)
-end = False
-log = []
-errors = 0
-clear = unClear(word,wordNoModify,clear,word[0])
-log.append(word[0])
-cmd = 'clear'
-if(platform.system()=="Windows"):
-    cmd = 'cls'
-
-while(not end):
-    os.system(cmd)
-    if errors >= maxErrors:
-        end = True
-        print(errorsPrint[errors])
-        print("Vous avez perdu ;( !")
-        print("Le mot était " + firstLetterCapital(word))
-        break
-    if not "_" in clear:
-        end = True
-        print("*- "+firstLetterCapital(word)+" -*")
-        print("Vous avez gagné :) !")
-        break
-    # print("Erreurs: " + str(errors)+"/"+str(maxErrors))
-    print(errorsPrint[errors])
-    print("Déjà utilisé: " + ", ".join(log))
-    print("Devinez: " + firstLetterCapital(clear))
-    inp = requestInput(log)
-    log.append(inp)
-    clear = unClear(word,wordNoModify,clear,inp)
-
-
-
-
