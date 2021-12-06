@@ -116,6 +116,37 @@ def unClear(word,wordNoModify,clear,char):
 def firstLetterCapital(word):
     return word[0].upper() + word[1:]
 
+
+def tri():
+
+    l=getDicoFr(path="liste_francais.txt")
+    dic={}
+    maxsize=0
+    
+    for w in l:
+        size = len(w)
+        t =  []
+        if size in dic:
+            t = dic[size]
+        t.append(w)
+        dic[size] = t
+        if maxsize<size:
+            maxsize=size
+    l2=[]
+    for i in range(5,maxsize):
+        t=[]
+        if i in dic:
+            t = dic[i]
+        t.sort()
+        l2.extend(t)
+
+    with open("liste_francais_trie.txt", "w") as file:
+        for i in range(0,len(l2)):
+            file.write(l2[i]+"\n")
+print(tri())
+exit(0)
+
+
 errorsPrint = [
 "\n\n\n\n\n",
 "\n\n\n\n\n____",
@@ -131,9 +162,9 @@ errorsPrint = [
 
 bestScore = -1
 maxErrors = len(errorsPrint)-1
-print(len(getDicoFr()))
-print(cheackEasy())
-exit(0)
+# print(len(getDicoFr()))
+# print(cheackEasy())
+# exit(0)
 
 random = getRandomWord()
 wordNoModify = random[0]
@@ -168,3 +199,7 @@ while(not end):
     inp = requestInput(log)
     log.append(inp)
     clear = unClear(word,wordNoModify,clear,inp)
+
+
+
+
