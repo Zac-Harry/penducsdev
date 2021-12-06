@@ -1,3 +1,4 @@
+# Hugues FARTHOUAT Baptiste RENOUARD 06/12/2021
 import unicodedata
 import random
 import os
@@ -10,7 +11,8 @@ allow_symb = "-"
 # Fonction permettant d'analyser une liste
 # de mots retournant les propotions de
 # présence des lettres
-# pth = chemin du dictionnaire
+# Entré: pth = chemin du dictionnaire
+# Sortie: Dictionnaire -> charactère : nombre de mots où il est présent
 def analyseDico(pth="liste_francais.txt"):
     dico = getDicoFr(pth=path,stripAccents = True)
     analyse = {}
@@ -31,6 +33,8 @@ def analyseDico(pth="liste_francais.txt"):
 # Fonction de test permettant de compter le
 # nombre de mots finissables "bêtement" en
 # utiliser les lettres les plus probables
+# Entré: path = chemin du dictionnaire
+# Sortie: Nombres de mots complétables facilement
 def cheackEasy(path="liste_francais.txt"):
     count = 0
     analyse = analyseDico()
@@ -52,12 +56,16 @@ def cheackEasy(path="liste_francais.txt"):
     return count
 
 # Fonction permettant de supprimer les accents
+# Entré: s = mot avec accents
+# Sortie: mot sans accents
 def strip_accents(s):
    return ''.join(c for c in unicodedata.normalize('NFD', s)
                   if unicodedata.category(c) != 'Mn')
 
 # Fonction permettant de lire un fichier texte
 # et de retourner un liste de mots formatés
+# Entré: path : chemin du dictionnaire
+# Sortie: liste des mots
 def getDicoFr(path="liste_francais.txt",stripAccents = False):
     l = []
     f = open(path, "r")
@@ -76,6 +84,8 @@ def getDicoFr(path="liste_francais.txt",stripAccents = False):
     return l
 
 # Fonction permettant de générer un mot aléatoire
+# Entré: NON
+# Sortie: Mot aléatoire du dictionnaire de base.
 def getRandomWord():
     dic = getDicoFr()
     wordNoModify = dic[random.randint(0,len(dic)-1)]
@@ -83,6 +93,8 @@ def getRandomWord():
     return [wordNoModify,word]
 
 # Fonction générant le mot à afficher avec les _
+# Entré: word : mot
+# Sortie: mot modifié
 def getClearWord(word):
     nWord = ""
     for c in word:
@@ -94,6 +106,8 @@ def getClearWord(word):
 
 # Fonction d'entrée clavier demandant si il
 # faut rejouer ou non
+# Entré: NON
+# Sortie: boolean True si arret, False si rejoue
 def playAgainInput():
     while True:
         inp = input("Pour rejouer tappez 1, sinon 0:\n")
@@ -108,6 +122,8 @@ def playAgainInput():
 
 # Fonction d'entrée clavier permettant de
 # saisir une lettre
+# Entré: log : liste des lettres déjà utilisées
+# Sortie: charactère à ajouter
 def requestInput(log=[]):
     valid = False
     while not valid:
@@ -124,11 +140,15 @@ def requestInput(log=[]):
         return inp
 
 # Met la première lettre du mot en majuscule
+# Entré: word : mot
+# Sortie: mot avec sa première lettre en majuscule
 def firstLetterCapital(word):
     return word[0].upper() + word[1:]
 
 # Fonction permettant de trier un fichier texte
 # par taille puis ordre aplhabétique
+# Entré: NON
+# Sortie: NON
 def tri():
 
     l=getDicoFr(path="liste_francais.txt")

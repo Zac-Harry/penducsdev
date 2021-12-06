@@ -1,8 +1,11 @@
+# Hugues FARTHOUAT Baptiste RENOUARD 06/12/2021
 import os
 import platform
 import ILib
 # Fonction vérifiant si le caractère est présent.
 # retourne le nouveau mot "clean"
+# Entré: word : mot / wordNoModify : mot sans transformation / clear : mot avec les _ pour les lettres manquantes / char: charactère ajouté
+# Sortie: clean en remplacant les _ par la charactère si il est présen
 def unClear(word,wordNoModify,clear,char):
     global errors
     global log
