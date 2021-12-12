@@ -86,7 +86,7 @@ while(not end):
             break
 
     # gagné
-    if not "_" in clear:
+    if not "." in clear:
         end = True
         print("*- "+ILib.firstLetterCapital(word)+" -*")
         print("Vous avez gagné :) !")

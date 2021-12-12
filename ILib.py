@@ -87,7 +87,7 @@ def getClearWord(word):
     nWord = ""
     for c in word:
         if c in allow_letters:
-            nWord +="_"
+            nWord +="."
         else:
             nWord+="-"
     return nWord
